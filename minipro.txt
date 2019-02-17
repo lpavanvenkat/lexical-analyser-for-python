@@ -1,0 +1,117 @@
+import os
+import nltk,re
+os.chdir("C:/Users/pavan 2/Downloads")
+f = open('inp.py','r')
+
+operators = { '=': 'Assignment Operator','+': 'Additon Operator', '-' : 'Substraction Operator', '/' : 'Division Operator', '*': 'Multiplication Operator', '++' : 'increment Operator', '--' : 'Decrement Operator','>':'greater than symbol','<':'lesser then symbol'}
+optr_keys = operators.keys()
+
+comments = {r'#' :'single line comment'}
+comment_keys = comments.keys()
+
+datatype = {'int': 'Integer','float' : 'Floating Point', 'char': 'Character','long': 'long int'}
+datatype_keys = datatype.keys()
+
+strings={r'".*"':'string'}
+string_keys = strings.keys()
+
+keyword = {'def':'defining a fuction', 'return' : 'keyword that returns a value from a block','for':'for loop statement','if':'conditional statement','else':'conditional statement','while':'conditional looping staement'}
+keyword_keys = keyword.keys()
+
+delimiter = {';':'terminator symbol semicolon (;)',':':'terminator symbol colon(:)'}
+delimiter_keys = delimiter.keys()
+
+imports  ={'import':'import statement'}
+import_keys=imports.keys()
+
+module ={'random':'moduale is random','calendar':'calendar moduale'}
+m_k=module.keys()
+
+builtin_functions = {'print':'print prints its argument on the console'}
+
+non_identifiers = ['_','-','+','/','*','`','~','!','@','#','$','%','^','&','*','(',')','=','|','"',':',';','{'
+,'}','[',']','<','>','?','/']
+
+errors={'fi':'if statement error','fro':'for statement error'}
+e_k=errors.keys()
+
+numerals = [r'[0-9]*']
+
+floats=[r'[-+]?[0-9]*\.?[0-9]*']
+# Flags
+dataFlag = False
+
+
+i = f.read()
+
+count = 0
+program =  i.split('\n')
+
+for line in program:
+    count = count+1
+    print ("Line #",count,"\n",line)
+    
+      
+    tokens= nltk.word_tokenize(line)
+    #tokens=re.findall("[A-Z]{2,}(?![a-z])|[A-Z][a-z]+(?=[A-Z])|[\'\w\-]+,line)
+    print ("Tokens are",tokens)
+    print ("Line #",count,'properties \n')
+    k=0
+    for token in tokens:
+        if '\r' in token:
+            position = token.find('\r')
+            token=token[:position]
+        if token in comment_keys:
+            print ("Comment Type: ", comments[token])
+            print("no of token 0")
+            break
+        if token in optr_keys:
+            print ("Operator is: ",token, operators[token])
+        if token in macros_keys:
+            print ("Macro is: ", macros[token])
+        if '()' in token:
+            print ("Function named", token)
+        if token in import_keys:
+        	print (imports[token])
+        if token in m_k:
+        	print (module[token])
+        if token in builtin_functions:
+        	print (builtin_functions[token])
+    
+        if dataFlag == True and (token not in non_identifiers) and ('()' not in token):
+            print ("Identifier: ",token)
+        if token in datatype_keys:
+            print ("type is: ", datatype[token])
+            dataFlag = True
+        if token in e_k:
+            print(errors[token])
+        
+        
+        if token in keyword_keys:
+            print (keyword[token])
+            
+        if token in delimiter:
+            print ("Delimiter" , delimiter[token])
+        if token in numerals:
+            print (token,type(int(token)))
+        if token in floats:
+        	print (token,type(float(token)))
+        if len(tokens)!=0 and k==0:
+            st=re.findall(r'".*"',line)
+            k=1
+            for pav in st:
+                pk=nltk.word_tokenize(pav)
+                print("the no of tokens is",len(tokens)-len(pk)+1)
+                print(pav,"is a string")
+            if(len(st)==0):
+                print("the no of tokens is",len(tokens))
+    if len(tokens)==0:
+        print ("empty line")
+    k=0    
+    dataFlag = False   
+            
+    
+    print ("________________________")
+    
+
+f.close()
