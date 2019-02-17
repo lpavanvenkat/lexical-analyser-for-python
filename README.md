@@ -1,2 +1,2 @@
-# lexical-analyser-for-python
-its a lexical analyser for python language coded in python using nltk tool
+# lexical-analyzer-for-python
+its a lexical analyzer for python language coded in python using nltk tool
